@@ -5,8 +5,8 @@ use std::hash::Hash;
 
 #[cfg(feature = "asset")]
 use bevy::asset::Asset;
+use bevy::platform_support::collections::HashMap;
 use bevy::prelude::{Component, Deref, DerefMut, Entity, Gamepad, Query, Reflect, Resource, With};
-use bevy::utils::HashMap;
 use bevy::{log::error, prelude::ReflectComponent};
 use bevy::{
     math::{Vec2, Vec3},
@@ -908,7 +908,7 @@ impl<A: Actionlike, U: Buttonlike> From<HashMap<A, Vec<U>>> for InputMap<A> {
     ///
     /// ```rust
     /// use bevy::prelude::*;
-    /// use bevy::utils::HashMap;
+    /// use bevy::platform_support::collections::HashMap;
     /// use leafwing_input_manager::prelude::*;
     ///
     /// #[derive(Actionlike, Debug, Clone, Copy, PartialEq, Eq, Hash, Reflect)]
@@ -985,7 +985,9 @@ mod tests {
                 (Action::Hide, KeyCode::ControlRight),
             ]);
 
-        let expected_bindings: HashMap<Box<dyn Buttonlike>, Action> = HashMap::from([
+        let mut expected_bindings: HashMap<Box<dyn Buttonlike>, Action> =
+            HashMap::with_hasher(bevy::platform_support::hash::FixedHasher);
+        for (key, bind) in [
             (Box::new(KeyCode::KeyW) as Box<dyn Buttonlike>, Action::Run),
             (
                 Box::new(KeyCode::ShiftLeft) as Box<dyn Buttonlike>,
@@ -1008,7 +1010,9 @@ mod tests {
                 Box::new(KeyCode::ControlRight) as Box<dyn Buttonlike>,
                 Action::Hide,
             ),
-        ]);
+        ] {
+            expected_bindings.insert(key, bind);
+        }
 
         for (action, input) in input_map.buttonlike_bindings() {
             let expected_action = expected_bindings.get(input).unwrap();

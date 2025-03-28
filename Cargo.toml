@@ -1,7 +1,7 @@
 [package]
 name = "leafwing-input-manager"
 description = "A powerful, flexible and ergonomic way to manage action-input keybindings for the Bevy game engine."
-version = "0.16.0"
+version = "0.17.0"
 authors = ["Leafwing Studios"]
 homepage = "https://leafwing-studios.com/"
 repository = "https://github.com/leafwing-studios/leafwing-input-manager"
@@ -49,10 +49,12 @@ egui = ['dep:bevy_egui']
 
 [dependencies]
 leafwing_input_manager_macros = { path = "macros", version = "0.16" }
-bevy = { version = "0.15.0", default-features = false, features = [
+bevy = { version = "0.16.0-rc.2", default-features = false, features = [
   "serialize",
+  "bevy_log",
+  "std",
 ] }
-bevy_egui = { version = "0.32", optional = true, default-features = false }
+bevy_egui = { version = "0.33", optional = true, default-features = false }
 itertools = "0.14"
 serde = { version = "1.0", features = ["derive"] }
 serde_flexitos = "0.2"
@@ -61,7 +63,7 @@ dyn-eq = "0.1"
 dyn-hash = "0.2"
 
 [dev-dependencies]
-bevy = { version = "0.15.0", default-features = false, features = [
+bevy = { version = "0.16.0-rc.2", default-features = false, features = [
   "bevy_asset",
   "bevy_sprite",
   "bevy_text",
@@ -71,6 +73,7 @@ bevy = { version = "0.15.0", default-features = false, features = [
   "bevy_state",
   "bevy_window",
   "x11",
+  "bevy_picking",
   # TODO Remove these before release. See https://github.com/bevyengine/bevy/issues/13728
   "ktx2",
   "zstd",
@@ -89,3 +92,6 @@ path = "src/lib.rs"
 name = "press_duration"
 path = "examples/press_duration.rs"
 required-features = ["timing"]
+
+[patch.crates-io]
+bevy_egui = {git = "https://github.com/PhaestusFox/bevy_egui"}

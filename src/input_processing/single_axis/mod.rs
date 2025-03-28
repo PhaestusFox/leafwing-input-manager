@@ -40,7 +40,7 @@ pub enum AxisProcessor {
     /// Flips the sign of input values, resulting in a directional reversal of control.
     ///
     /// ```rust
-    /// use leafwing_input_manager::prelude::*;
+    /// use leafwing_input_manager::prelude::AxisProcessor;
     ///
     /// assert_eq!(AxisProcessor::Inverted.process(2.5), -2.5);
     /// assert_eq!(AxisProcessor::Inverted.process(-2.5), 2.5);
